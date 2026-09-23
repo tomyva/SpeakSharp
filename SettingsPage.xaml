@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakSharp.SettingsPage"
+             Title="Settings"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ScrollView>
+        <VerticalStackLayout Padding="24,24,24,44" Spacing="18" MaximumWidthRequest="760">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="MAKE IT YOURS" Style="{StaticResource Eyebrow}" />
+                <Label Text="Practice settings" Style="{StaticResource PageTitle}" />
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="AI COACH" Style="{StaticResource SectionLabel}" />
+                    <Label Text="OpenAI API key" FontAttributes="Bold" TextColor="{StaticResource Ink}" />
+                    <Entry Text="{Binding ApiKey}" IsPassword="True" Placeholder="sk-…" ClearButtonVisibility="WhileEditing" />
+                    <Label Text="Enables faithful transcription, structured coaching, and an AI-generated reference voice. Your key is encrypted in this device's secure storage. A production release should route requests through a secured backend." Style="{StaticResource HelpText}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="SESSION LENGTH" Style="{StaticResource SectionLabel}" />
+                    <Picker Title="Duration" ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}" />
+                    <Label Text="Seconds per speaking round. Sessions stop automatically at the selected limit." Style="{StaticResource HelpText}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="DAILY REMINDERS" Style="{StaticResource SectionLabel}" />
+                    <Grid ColumnDefinitions="*,Auto"><Label Text="Morning" VerticalTextAlignment="Center" Style="{StaticResource BodyText}"/><TimePicker Grid.Column="1" Time="{Binding Morning}" /></Grid>
+                    <Grid ColumnDefinitions="*,Auto"><Label Text="Afternoon" VerticalTextAlignment="Center" Style="{StaticResource BodyText}"/><TimePicker Grid.Column="1" Time="{Binding Afternoon}" /></Grid>
+                    <Grid ColumnDefinitions="*,Auto"><Label Text="Evening" VerticalTextAlignment="Center" Style="{StaticResource BodyText}"/><TimePicker Grid.Column="1" Time="{Binding Evening}" /></Grid>
+                    <Label Text="On Android and iOS, SpeakSharp schedules local coaching notifications. Tap one to return to the practice screen." Style="{StaticResource HelpText}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Save settings" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" />
+            <Label Text="{Binding Status}" TextColor="{StaticResource Success}" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

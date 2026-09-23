@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakSharp.ProgressPage"
+             Title="Progress"
+             BackgroundColor="{StaticResource PageBackground}">
+    <Grid RowDefinitions="Auto,*" Padding="24,24,24,0" MaximumWidthRequest="760">
+        <VerticalStackLayout Spacing="7" Margin="0,0,0,18">
+            <Label Text="YOUR PROGRESS" Style="{StaticResource Eyebrow}" />
+            <Label Text="Practice compounds." Style="{StaticResource PageTitle}" />
+            <Label Text="{Binding Summary}" Style="{StaticResource BodyText}" />
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Sessions}" EmptyView="No sessions yet. Your completed rounds will appear here.">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="8">
+                            <Label Text="{Binding Topic}" FontAttributes="Bold" FontSize="17" TextColor="{StaticResource Ink}" LineBreakMode="TailTruncation" />
+                            <Border Grid.Column="1" BackgroundColor="{StaticResource AccentSoft}" StrokeThickness="0" Padding="10,5" StrokeShape="RoundRectangle 20">
+                                <Label Text="{Binding Feedback.OverallScore, StringFormat='Score {0}'}" TextColor="{StaticResource Accent}" FontAttributes="Bold" FontSize="12" />
+                            </Border>
+                            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Feedback.Headline}" TextColor="{StaticResource Muted}" />
+                            <Label Grid.Row="2" Text="{Binding CompletedAt, StringFormat='{0:ddd, MMM d · h:mm tt}'}" Style="{StaticResource MetricLabel}" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Analysis.FillerCount, StringFormat='{0} fillers'}" Style="{StaticResource MetricLabel}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

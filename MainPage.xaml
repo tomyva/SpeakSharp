@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakSharp.MainPage"
+             Title="Practice"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ScrollView>
+        <VerticalStackLayout Padding="24,24,24,44" Spacing="18" MaximumWidthRequest="760">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="SPEAKSHARP" Style="{StaticResource Eyebrow}" />
+                    <Label Text="One focused minute." Style="{StaticResource PageTitle}" />
+                </VerticalStackLayout>
+                <Border Grid.Column="1" Style="{StaticResource StreakPill}">
+                    <Label Text="🔥 TODAY" TextColor="{StaticResource Warm}" FontAttributes="Bold" FontSize="12" />
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource HeroCard}">
+                <VerticalStackLayout Spacing="16">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="{Binding TopicCategory}" Style="{StaticResource Eyebrow}" TextColor="{StaticResource Mint}" />
+                        <Button Grid.Column="1" Text="New topic ↻" Command="{Binding NewTopicCommand}" Style="{StaticResource QuietButton}" />
+                    </Grid>
+                    <Label Text="{Binding TopicPrompt}" TextColor="White" FontSize="26" FontAttributes="Bold" LineHeight="1.15" />
+                    <Label Text="Take a breath. Make one clear point, support it, then land the thought." TextColor="#AEB7D1" FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="16" HorizontalOptions="Fill">
+                    <Label Text="{Binding TimerText}" HorizontalTextAlignment="Center" FontSize="54" FontAttributes="Bold" TextColor="{StaticResource Ink}" />
+                    <Label Text="{Binding Status}" HorizontalTextAlignment="Center" TextColor="{StaticResource Muted}" FontSize="14" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="{StaticResource Accent}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Text="●  Record" Command="{Binding RecordCommand}" Style="{StaticResource PrimaryButton}" />
+                        <Button Grid.Column="1" Text="■  Stop" Command="{Binding StopCommand}" Style="{StaticResource SecondaryButton}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Text="▶  My recording" Command="{Binding PlayRecordingCommand}" Style="{StaticResource QuietButton}" />
+                        <Button Grid.Column="1" Text="See sample" Command="{Binding UseSampleCommand}" Style="{StaticResource QuietButton}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}" IsVisible="{Binding ShowTranscriptEditor}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="TRANSCRIPT" Style="{StaticResource SectionLabel}" />
+                    <Editor Text="{Binding Transcript}" Placeholder="Your transcript appears here. Without an API key, type or paste it." AutoSize="TextChanges" MinimumHeightRequest="120" />
+                    <Button Text="Analyze my delivery" Command="{Binding AnalyzeCommand}" Style="{StaticResource PrimaryButton}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <VerticalStackLayout Spacing="14" IsVisible="{Binding HasResults}">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                    <Border Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2"><Label Text="{Binding Feedback.OverallScore}" Style="{StaticResource MetricValue}"/><Label Text="SCORE" Style="{StaticResource MetricLabel}"/></VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2"><Label Text="{Binding Analysis.WordsPerMinute, StringFormat='{0:0}'}" Style="{StaticResource MetricValue}"/><Label Text="WORDS / MIN" Style="{StaticResource MetricLabel}"/></VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2"><Label Text="{Binding Analysis.FillerCount}" Style="{StaticResource MetricValue}"/><Label Text="FILLERS" Style="{StaticResource MetricLabel}"/></VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="{Binding Feedback.Headline}" FontSize="23" FontAttributes="Bold" TextColor="{StaticResource Ink}" />
+                        <BoxView HeightRequest="1" Color="{StaticResource Line}" />
+                        <Label Text="WHAT WORKED" Style="{StaticResource SectionLabel}" TextColor="{StaticResource Success}" />
+                        <Label Text="{Binding Feedback.Strength}" Style="{StaticResource BodyText}" />
+                        <Label Text="CLEAN UP" Style="{StaticResource SectionLabel}" TextColor="{StaticResource Warm}" />
+                        <Label Text="{Binding Feedback.Improvement}" Style="{StaticResource BodyText}" />
+                        <Label Text="NEXT REP" Style="{StaticResource SectionLabel}" TextColor="{StaticResource Accent}" />
+                        <Label Text="{Binding Feedback.NextDrill}" Style="{StaticResource BodyText}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource DarkCard}">
+                    <VerticalStackLayout Spacing="13">
+                        <Label Text="HOW IT COULD SOUND" Style="{StaticResource Eyebrow}" TextColor="{StaticResource Mint}" />
+                        <Label Text="{Binding Feedback.ImprovedScript}" TextColor="White" FontSize="16" LineHeight="1.35" />
+                        <Label Text="AI-generated voice" TextColor="#8F99B3" FontSize="11" />
+                        <Button Text="▶  Play reference delivery" Command="{Binding PlayReferenceCommand}" Style="{StaticResource MintButton}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Button Text="Try this topic again" Command="{Binding RetryCommand}" Style="{StaticResource SecondaryButton}" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
