@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using SpeakSharp.Models;
 using SpeakSharp.Services;
 
@@ -25,7 +24,6 @@ public sealed class SettingsViewModel : ObservableObject
         _morning = values.ElementAtOrDefault(0)?.Time ?? new TimeSpan(9, 0, 0);
         _afternoon = values.ElementAtOrDefault(1)?.Time ?? new TimeSpan(14, 0, 0);
         _evening = values.ElementAtOrDefault(2)?.Time ?? new TimeSpan(19, 0, 0);
-        SaveCommand = new Command(async () => await SaveAsync());
     }
 
     public IReadOnlyList<int> Durations { get; } = [15, 30, 45, 60];
@@ -35,11 +33,10 @@ public sealed class SettingsViewModel : ObservableObject
     public TimeSpan Afternoon { get => _afternoon; set => SetProperty(ref _afternoon, value); }
     public TimeSpan Evening { get => _evening; set => SetProperty(ref _evening, value); }
     public string Status { get => _status; private set => SetProperty(ref _status, value); }
-    public ICommand SaveCommand { get; }
 
     public async Task LoadAsync() => ApiKey = await _coach.GetApiKeyAsync();
 
-    private async Task SaveAsync()
+    public async Task SaveAsync()
     {
         await _coach.SetApiKeyAsync(ApiKey);
         Preferences.Default.Set("practice_duration", Duration);

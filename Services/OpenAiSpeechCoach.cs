@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Diagnostics;
 using System.Text.Json;
 using SpeakSharp.Models;
 
@@ -21,7 +22,7 @@ public sealed class OpenAiSpeechCoach(HttpClient httpClient)
         using var request = new HttpRequestMessage(HttpMethod.Post, "audio/transcriptions");
         Authorize(request, apiKey);
         using var form = new MultipartFormDataContent();
-        form.Add(new StringContent("gpt-4o-mini-transcribe"), "model");
+        form.Add(new StringContent("gpt-transcribe"), "model");
         form.Add(new StringContent("Transcribe natural speech exactly. Preserve filler words such as um, uh, er, ah, like, and you know."), "prompt");
         var audio = new ByteArrayContent(wavAudio);
         audio.Headers.ContentType = new MediaTypeHeaderValue("audio/wav");
@@ -124,15 +125,24 @@ public sealed class OpenAiSpeechCoach(HttpClient httpClient)
     {
         if (response.IsSuccessStatusCode) return;
         var body = await response.Content.ReadAsStringAsync(cancellationToken);
+        var message = $"OpenAI request failed ({(int)response.StatusCode} {response.ReasonPhrase}).";
         try
         {
             using var json = JsonDocument.Parse(body);
-            var message = json.RootElement.GetProperty("error").GetProperty("message").GetString();
-            throw new InvalidOperationException(message ?? $"OpenAI request failed ({(int)response.StatusCode}).");
+            if (json.RootElement.TryGetProperty("error", out var error)
+                && error.TryGetProperty("message", out var errorMessage)
+                && !string.IsNullOrWhiteSpace(errorMessage.GetString()))
+            {
+                message = $"OpenAI request failed ({(int)response.StatusCode}): {errorMessage.GetString()}";
+            }
         }
         catch (JsonException)
         {
-            throw new InvalidOperationException($"OpenAI request failed ({(int)response.StatusCode}).");
+            // Keep the status-based message when a proxy or network appliance
+            // returns a non-JSON response.
         }
+
+        Debug.WriteLine(message);
+        throw new InvalidOperationException(message);
     }
 }

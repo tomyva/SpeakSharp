@@ -12,9 +12,11 @@ public sealed class AudioPracticeService(IAudioManager audioManager) : IDisposab
 
     public async Task StartAsync()
     {
+#if !WINDOWS
         var status = await Permissions.RequestAsync<Permissions.Microphone>();
         if (status != PermissionStatus.Granted)
             throw new InvalidOperationException("Microphone permission is required to record a practice attempt.");
+#endif
 
         _player?.Stop();
         _recorder = audioManager.CreateRecorder();

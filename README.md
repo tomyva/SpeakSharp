@@ -39,7 +39,7 @@ Open **Settings**, add an OpenAI API key, select a session length, choose remind
 
 The current pipeline uses:
 
-- `gpt-4o-mini-transcribe` for transcription
+- `gpt-transcribe` for transcription
 - `gpt-6-luna` with Structured Outputs for coaching
 - `gpt-4o-mini-tts` with the `cedar` voice for reference delivery
 

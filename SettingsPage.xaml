@@ -15,7 +15,7 @@
                 <VerticalStackLayout Spacing="14">
                     <Label Text="AI COACH" Style="{StaticResource SectionLabel}" />
                     <Label Text="OpenAI API key" FontAttributes="Bold" TextColor="{StaticResource Ink}" />
-                    <Entry Text="{Binding ApiKey}" IsPassword="True" Placeholder="sk-…" ClearButtonVisibility="WhileEditing" />
+                    <Entry x:Name="ApiKeyEntry" Text="{Binding ApiKey}" IsPassword="True" Placeholder="sk-…" ClearButtonVisibility="WhileEditing" />
                     <Label Text="Enables faithful transcription, structured coaching, and an AI-generated reference voice. Your key is encrypted in this device's secure storage. A production release should route requests through a secured backend." Style="{StaticResource HelpText}" />
                 </VerticalStackLayout>
             </Border>
@@ -38,7 +38,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Button Text="Save settings" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" />
+            <Button Text="Save settings" Clicked="OnSaveClicked" Style="{StaticResource PrimaryButton}" />
             <Label Text="{Binding Status}" TextColor="{StaticResource Success}" HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
     </ScrollView>

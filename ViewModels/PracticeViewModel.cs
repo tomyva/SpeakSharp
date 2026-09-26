@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using System.Diagnostics;
 using SpeakSharp.Models;
 using SpeakSharp.Services;
 
@@ -120,8 +121,9 @@ public sealed class PracticeViewModel : ObservableObject
         }
         catch (Exception exception)
         {
+            Debug.WriteLine($"Transcription failed: {exception}");
             ShowTranscriptEditor = true;
-            Status = "The recording is safe. You can still enter a transcript manually.";
+            Status = $"Transcription failed: {exception.Message} Your recording is safe, and you can enter a transcript manually.";
             await ShowErrorAsync(exception.Message);
         }
         finally { IsBusy = false; }
